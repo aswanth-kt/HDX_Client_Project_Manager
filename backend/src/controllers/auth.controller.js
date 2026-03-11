@@ -7,7 +7,7 @@ const generateToken = async (id) => {
   try {
 
     const user = await User.findById(id);
-    user.generateAccessToken();
+    return user.generateAccessToken();
 
   } catch (error) {
     console.error("Token generate error:", error)
@@ -57,7 +57,7 @@ export const registerUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id)
+      token: await generateToken(user._id)
     })
     
   } catch (error) {
@@ -68,3 +68,60 @@ export const registerUser = async (req, res) => {
     })
   }
 };
+
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Enter email or password"
+      });
+    };
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    };
+
+    const isPasswordValid = await user.isPasswordCorrect(password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
+    };
+
+    const accessToken = await generateToken(user._id);
+
+    const loggedinUser = await User.findById(user._id)
+    .select("-password");
+
+    const options = {
+      httpOnly: true,
+      srcure: true
+    };
+
+    return res.status(200)
+    .cookie("accessToken", accessToken, options)
+    .json({
+      success: true,
+      message: "Loggedin successfully",
+      loggedinUser
+    })
+    
+  } catch (error) {
+    console.error("Login error:", error?.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+}
