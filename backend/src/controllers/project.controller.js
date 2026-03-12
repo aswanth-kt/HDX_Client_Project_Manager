@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Project } from "../models/project.model.js";
+import { json } from "express";
 
 
 export const createProject = async (req, res) => {
@@ -7,7 +8,7 @@ export const createProject = async (req, res) => {
 
     const { name, client, assignedTo, deadline, description } = req.body;
 
-    if (!name || !client || !assignedTo || !deadline || !description) {
+    if (!name || !client || !assignedTo || !deadline) {
       return res.status(400).json({
         success: false,
         message: "Required fields missing"
@@ -44,4 +45,43 @@ export const createProject = async (req, res) => {
       message: "Internal Server Error"
     })
   }
-}
+};
+
+
+export const getProjects = async (req, res) => {
+  try {
+
+    const { name, status } = req.query;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = Math.min(parseInt(req.query.limit) || 10 , 20);
+    const skip = (page - 1) * limit;
+
+    const filter = {};
+
+    if (name) filter.name = { $regex: name, $options: "i" };
+    if (name) filter.status = { $regex: status, $options: "i" };
+
+    const projects = await Project.find(filter)
+    .skip(skip)
+    .limit(limit);
+
+    const totalProjects = await Project.countDocuments(filter);
+
+    return res.status(200),json({
+      success: true,
+      page,
+      projects,
+      totalPages: Math.ceil(totalProjects / limit),
+      totalProjects,
+      message: "Projects fetched"
+    })
+    
+  } catch (error) {
+    console.error(error?.message)
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+};

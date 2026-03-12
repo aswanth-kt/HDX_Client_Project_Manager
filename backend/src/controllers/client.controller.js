@@ -65,10 +65,10 @@ export const getAllClients = async (req, res) => {
 
     const filter = {};
 
-    if (name) filter.name = { $regex: name, options: "i" };
-    if (company) filter.company = { $regex: company, options: "i" };
-    if (email) filter.email = { $regex: email, options: "i" };
-    if (phone) filter.phone = { $regex: phone, options: "i" };
+    if (name) filter.name = { $regex: name, $options: "i" };
+    if (company) filter.company = { $regex: company, $options: "i" };
+    if (email) filter.email = { $regex: email, $options: "i" };
+    if (phone) filter.phone = { $regex: phone, $options: "i" };
     
     const clients = await Client.find(filter)
     .skip(skip)
@@ -86,6 +86,7 @@ export const getAllClients = async (req, res) => {
     })
 
   } catch (error) {
+    console.error(error?.message)
     return res.status(500).json({
       success: false,
       message: "Internal Server Error"
