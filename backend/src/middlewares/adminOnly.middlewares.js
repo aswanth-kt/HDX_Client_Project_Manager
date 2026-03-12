@@ -1,6 +1,6 @@
 
 export const adminOnly = (req, res, next) => {
-  console.log("adminonly req.user:", req.user)
+  // console.log("adminonly req.user:", req.user)
   
   if (req.user.role !== "admin") {
     return res.status(403).json({

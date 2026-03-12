@@ -137,23 +137,23 @@ export const deleteClient = async (req, res) => {
 
     const { clientId } = req.params;
 
-    if (!clientId || !mongoose.isValidObjectId(clientId)) {
+    if (!mongoose.isValidObjectId(clientId)) {
       return res.status(400).json({
         success: false,
         message: "Invalid client Id"
       })
     };
 
-    const client = await Client.findById(clientId);
+    const deletedClient = await Client.findByIdAndDelete(clientId);
 
-    if (!client) {
+    if (!deletedClient) {
       return res.status(404).json({
         success: false,
         message: "Client not found"
       })
-    }
+    };
 
-    await client.deleteOne();
+    console.log("Deleted client:", deletedClient)
 
     return res.status(200).json({
       success: true,

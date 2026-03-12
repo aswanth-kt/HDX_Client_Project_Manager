@@ -16,13 +16,13 @@ const projectSchema = new Schema(
       ref: "User",
       required: true,
     },
-    deadLine: {
+    deadline: {
       type: Date,
       required: true
     },
     status: {
       type: String,
-      enum: ["Pending", "In Progress", "Compleated"],
+      enum: ["Pending", "In Progress", "Completed"],
       default: "Pending",
     },
     description: String,

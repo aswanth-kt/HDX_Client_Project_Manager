@@ -39,7 +39,7 @@ export const verifyJWT = async (req, res, next) => {
 
   } catch (error) {
     console.error("Verify JWT error:", error?.message || error);
-    return res.status(500).json({
+    return res.status(401).json({
       success: false,
       message: "Invalid or expired token"
     })

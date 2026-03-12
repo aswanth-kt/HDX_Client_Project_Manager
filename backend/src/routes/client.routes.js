@@ -1,17 +1,20 @@
 import { Router } from "express";
 import { addClient, deleteClient, getAllClients, updateClient } from "../controllers/client.controller.js";
-import { adminOnly } from "../middlewares/adminOnly.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
+import { adminOnly } from "../middlewares/adminOnly.middlewares.js";
 
 
 const router = Router();
 
-router.post("/add-client", verifyJWT, adminOnly, addClient);
+// middleware apply to all this router
+router.use(verifyJWT, adminOnly);
 
-router.put("/update-client/:clientId", verifyJWT, adminOnly, updateClient);
+router.post("/add-client", addClient);
 
-router.get("/get-clients", verifyJWT, adminOnly, getAllClients);
+router.put("/update-client/:clientId", updateClient);
 
-router.delete("/delete-client/:clientId", verifyJWT, adminOnly, deleteClient);
+router.get("/get-clients", getAllClients);
+
+router.delete("/delete-client/:clientId", deleteClient);
 
 export default router;
