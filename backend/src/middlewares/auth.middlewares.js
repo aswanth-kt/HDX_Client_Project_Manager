@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 
 
 export const verifyJWT = async (req, res, next) => {
@@ -14,7 +14,7 @@ export const verifyJWT = async (req, res, next) => {
       })
     };
   
-    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   
     if (!decoded) {
       return res.status(401).json({
@@ -41,7 +41,7 @@ export const verifyJWT = async (req, res, next) => {
     console.error("Verify JWT error:", error?.message || error);
     return res.status(500).json({
       success: false,
-      message: "Internal Server Error"
+      message: "Invalid or expired token"
     })
   }
 
