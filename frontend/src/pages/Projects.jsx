@@ -8,13 +8,14 @@ import axios from "../api/axios";
 function Projects() {
 
   const [projects, setProjects] = useState([])
+  const [onSearch, setOnSearch] = useState();
 
   useEffect(() => {
 
     const fetchProject = async () => {
       try {
 
-        const res = await axios.get("/api/project/get-project");
+        const res = await axios.get(`/api/project/get-project?name=${onSearch || ""}`);
         
         setProjects(res.data.projects)
         
@@ -25,7 +26,9 @@ function Projects() {
 
     fetchProject();
 
-  }, [])
+  }, [onSearch]);
+
+  console.log("p", onSearch)
 
   return (
     <MainLayout>
@@ -42,7 +45,7 @@ function Projects() {
 
       </div>
 
-      <Search setProjects={setProjects} />
+      <Search setOnSearch={setOnSearch} />
 
       <select name="" id="" className='border p-2 mb-4'>
 

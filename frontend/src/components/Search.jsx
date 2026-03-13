@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import axios from "../api/axios";
 
+const Search = ({ setOnSearch }) => {
 
-const Search = ({ setProjects }) => {
-
+  // const [projectQuery, setProjectQuery] = useState("");
+  // const [clientQuery, setClientQuery] = useState("");
   const [query, setQuery] = useState("");
-  // const [results, setResults] = useState([]);
 
   useEffect(() => {
-    const searchAPI = async () => {
-      try {
-        const res = await axios.get(
-          `/api/project/get-project?name=${query}`
-        );
-
-        console.log("search res:", res.data);
-
-        setProjects(res.data.projects);
-
-      } catch (error) {
-        console.error(error.response?.data?.message || error)
-      }
-    };
 
     const delay = setTimeout(() => {
-      if (query) {
-        searchAPI();
-      }
+      setOnSearch(query);
     }, 500);
 
     return () => clearTimeout(delay);
-  }, [query, setProjects]);
+
+  }, [query, setOnSearch]);
   
   return (
     <input type="text"

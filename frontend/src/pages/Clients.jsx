@@ -1,7 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
+import Search from '../components/Search'
+import axios from "../api/axios";
 
 const Clients = () => {
+
+  const [clients, setClients] = useState([]);
+  const [onSearch, setOnSearch] = useState();
+
+  useEffect(() => {
+    
+    const fetchClients = async () => {
+      try {
+        
+        const res = await axios.get(
+          `/api/client/get-clients?search=${onSearch}`
+        );
+
+        console.log("clients res:", res.data);
+
+        setClients(res.data.clients);
+
+      } catch (error) {
+        console.error(error.response?.data?.message || error);
+      }
+    }
+
+    fetchClients();
+
+  }, [onSearch]);
+
+  console.log("c", onSearch)
+
   return (
     <MainLayout>
 
@@ -17,10 +47,7 @@ const Clients = () => {
 
       </div>
 
-      <input type="text"
-      placeholder='Search Clients...'
-      className='border p-2 mb-4 w-full md:w-64'
-      />
+      <Search setOnSearch={setOnSearch} />
 
       <div className='bg-white shadow rounded overflow-x-auto'>
 
@@ -37,17 +64,21 @@ const Clients = () => {
           </thead>
 
           <tbody>
-            <tr className='border-t'>
-              <td className='p-2'>Aswanth</td>
-              <td className='p-2'>XYZ Ltd</td>
-              <td className='p-2'>aswanth@gmail.com</td>
-              <td className='p-2'>1234555555</td>
+            {clients.map((client) => {
+              return (
+                <tr key={client._id} className='border-t'>
+                  <td className='p-2'>{client.name}</td>
+                  <td className='p-2'>{client.company}</td>
+                  <td className='p-2'>{client.email}</td>
+                  <td className='p-2'>{client.phone}</td>
 
-              <td className='p-2'>
-                <button className='text-blue-500 mr-3'>Edit</button>
-                <button className='text-red-500 mr-3'>Delete</button>
-              </td>
-            </tr>
+                  <td className='p-2'>
+                    <button className='text-blue-500 mr-3'>Edit</button>
+                    <button className='text-red-500 mr-3'>Delete</button>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
 
         </table>

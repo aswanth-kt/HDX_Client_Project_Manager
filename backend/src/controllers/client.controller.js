@@ -57,22 +57,30 @@ export const addClient = async (req, res) => {
 export const getAllClients = async (req, res) => {
   try {
 
-    const { name, company, email, phone } = req.query;
+    const { search } = req.query;
 
     const page = parseInt(req.query.page) || 1;
     const limit = Math.min(parseInt(req.query.limit) || 10, 20);
     const skip = (page - 1) * limit;
 
-    const filter = {};
-
-    if (name) filter.name = { $regex: name, $options: "i" };
-    if (company) filter.company = { $regex: company, $options: "i" };
-    if (email) filter.email = { $regex: email, $options: "i" };
-    if (phone) filter.phone = { $regex: phone, $options: "i" };
+    let filter = {};
+    
+    if (search) {
+      filter = {
+        $or: [
+          { name: { $regex: search, $options: "i" }},
+          { company: { $regex: search, $options: "i" }},
+          { email: { $regex: search, $options: "i" }},
+          { phone: { $regex: search, $options: "i" }}
+        ]
+      }
+    };
     
     const clients = await Client.find(filter)
     .skip(skip)
     .limit(limit);
+
+    console.log("clients:", clients)
 
     const totalClients = await Client.countDocuments(filter);
 
