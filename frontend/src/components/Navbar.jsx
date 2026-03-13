@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 const Navbar = ({ setOpen }) => {
 
   const { user } = useAuth();
-  console.log("context:", user)
+  // console.log("context user:", user)
 
   return (
     <div className="bg-white shadow flex justify-between items-center p-4">
@@ -22,7 +22,7 @@ const Navbar = ({ setOpen }) => {
       />
 
       <div className="font-medium">
-        Hi { user?.name || "User" }
+        { user ? `Hi ${user.name}!` : "Hi, User!" }
       </div>
 
     </div>

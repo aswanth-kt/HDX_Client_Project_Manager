@@ -1,7 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const Sidebar = ({ open, setOpen }) => {
+
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/")
+  }
+
   return (
     <div className={`bg-gray-900 text-white w-64 p-5 fixed md:static h-full z-20 
     ${open ? "left-0" : "-left-64"} md:left-0 transition-all`}>
@@ -22,7 +33,7 @@ const Sidebar = ({ open, setOpen }) => {
           Projects
         </Link>
 
-        <button className="text-red-400 mt-10">
+        <button onClick={handleLogout} className="text-red-400 mt-10">
           Logout
         </button>
 

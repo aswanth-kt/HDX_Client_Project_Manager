@@ -125,4 +125,53 @@ export const login = async (req, res) => {
       message: "Internal Server Error"
     })
   }
+};
+
+
+export const getMe = async (req, res) => {
+  try {
+
+    const user = await User.findById(req?.user?._id)
+    .select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "fetched user",
+      user
+    })
+    
+  } catch (error) {
+    console.error("Login error:", error?.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+};
+
+
+export const logout = async (req, res) => {
+  try {
+
+    res.clearCookie("accessToken");
+
+    return res.status(200).json({
+      success: true, 
+      message: "Logged out"
+    })
+    
+  } catch (error) {
+    console.error("Login error:", error?.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
 }
