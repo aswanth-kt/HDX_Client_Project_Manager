@@ -28,8 +28,6 @@ function Projects() {
 
   }, [onSearch]);
 
-  console.log("p", onSearch)
-
   return (
     <MainLayout>
 

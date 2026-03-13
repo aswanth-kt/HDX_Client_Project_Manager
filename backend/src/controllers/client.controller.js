@@ -80,7 +80,7 @@ export const getAllClients = async (req, res) => {
     .skip(skip)
     .limit(limit);
 
-    console.log("clients:", clients)
+    // console.log("clients:", clients)
 
     const totalClients = await Client.countDocuments(filter);
 

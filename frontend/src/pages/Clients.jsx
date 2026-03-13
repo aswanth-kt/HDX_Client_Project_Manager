@@ -14,10 +14,10 @@ const Clients = () => {
       try {
         
         const res = await axios.get(
-          `/api/client/get-clients?search=${onSearch}`
+          `/api/client/get-clients?search=${onSearch || ""}`
         );
 
-        console.log("clients res:", res.data);
+        // console.log("clients res:", res.data);
 
         setClients(res.data.clients);
 
@@ -29,8 +29,6 @@ const Clients = () => {
     fetchClients();
 
   }, [onSearch]);
-
-  console.log("c", onSearch)
 
   return (
     <MainLayout>
