@@ -106,9 +106,8 @@ export const login = async (req, res) => {
 
     const options = {
       httpOnly: true,
-      // sameSite: "strict",
-      sameSite: "lax",
-      secure: false,
+      sameSite: "strict",
+      secure: true,
     };
 
     return res.status(200)

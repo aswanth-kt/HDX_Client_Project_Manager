@@ -1,6 +1,11 @@
 import React from 'react'
+import { useAuth } from '../context/AuthContext'
 
 const Navbar = ({ setOpen }) => {
+
+  const { user } = useAuth();
+  console.log("context:", user)
+
   return (
     <div className="bg-white shadow flex justify-between items-center p-4">
 
@@ -17,7 +22,7 @@ const Navbar = ({ setOpen }) => {
       />
 
       <div className="font-medium">
-        Admin
+        Hi { user?.name || "User" }
       </div>
 
     </div>
