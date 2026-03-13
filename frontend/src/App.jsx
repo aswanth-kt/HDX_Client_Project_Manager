@@ -6,6 +6,7 @@ import Projects from './pages/Projects'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ProtectedRoutes from './routes/protectedRoutes'
+import RoleRoutes from './routes/RoleRoutes'
 
 function App() {
 
@@ -17,25 +18,25 @@ function App() {
       <Route 
         path='/dashboard' 
         element={
-          <ProtectedRoutes>
+          <RoleRoutes allowedRoles={["admin"]}>
             <Dashboard />
-          </ProtectedRoutes>
+          </RoleRoutes>
         } 
       />
       <Route 
         path='/clients' 
         element={
-          <ProtectedRoutes>
+          <RoleRoutes allowedRoles={["admin"]}>
             <Clients />
-          </ProtectedRoutes>
+          </RoleRoutes>
         }
         />
       <Route 
         path='/projects'
         element={
-          <ProtectedRoutes>
+          <RoleRoutes allowedRoles={["admin"]}>
             <Projects />
-          </ProtectedRoutes>
+          </RoleRoutes>
         }
       />
     </Routes>
