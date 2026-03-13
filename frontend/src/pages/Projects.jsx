@@ -1,7 +1,32 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
+import Search from '../components/Search'
+import ProjectTable from '../components/ProjectTable'
+import axios from "../api/axios";
+
 
 function Projects() {
+
+  const [projects, setProjects] = useState([])
+
+  useEffect(() => {
+
+    const fetchProject = async () => {
+      try {
+
+        const res = await axios.get("/api/project/get-project");
+        
+        setProjects(res.data.projects)
+        
+      } catch (error) {
+        console.error(error.response?.data?.message || error)
+      }
+    };
+
+    fetchProject();
+
+  }, [])
+
   return (
     <MainLayout>
 
@@ -17,6 +42,8 @@ function Projects() {
 
       </div>
 
+      <Search setProjects={setProjects} />
+
       <select name="" id="" className='border p-2 mb-4'>
 
         <option value="">All</option>
@@ -28,29 +55,7 @@ function Projects() {
 
       <div className='bg-white shadow rounded overflow-x-auto'>
 
-        <table className='w-full'>
-
-          <thead className='bg-gray-200'>
-            <tr>
-              <th className='p-2 text-left' >Project</th>
-              <th className='p-2 text-left' >Client</th>
-              <th className='p-2 text-left' >Assigned To</th>
-              <th className='p-2 text-left' >Deadline</th>
-              <th className='p-2 text-left' >Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr className='border-t'>
-              <td className='p-2'>E-Commerce web site</td>
-              <td className='p-2'>XYZ Ltd</td>
-              <td className='p-2'>Aswanth</td>
-              <td className='p-2'>2026-03-15</td>
-              <td className='p-2'>Pending</td>
-            </tr>
-          </tbody>
-
-        </table>
+        <ProjectTable projects={projects} />
 
       </div>
 

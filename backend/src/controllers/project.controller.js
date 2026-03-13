@@ -59,16 +59,21 @@ export const getProjects = async (req, res) => {
 
     const filter = {};
 
-    if (name) filter.name = { $regex: name, $options: "i" };
-    if (name) filter.status = { $regex: status, $options: "i" };
+    if (name && name.trim()) filter.name = { $regex: name, $options: "i" };
+    if (status) filter.status = { $regex: status, $options: "i" };
 
     const projects = await Project.find(filter)
+    .populate("client", "name")
+    .populate("assignedTo", "name")
+    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
 
+    // console.log("projects:", projects)
+
     const totalProjects = await Project.countDocuments(filter);
 
-    return res.status(200),json({
+    return res.status(200).json({
       success: true,
       page,
       projects,

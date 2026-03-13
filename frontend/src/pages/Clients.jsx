@@ -17,7 +17,7 @@ const Clients = () => {
 
       </div>
 
-      <input type="text" name="" id="" 
+      <input type="text"
       placeholder='Search Clients...'
       className='border p-2 mb-4 w-full md:w-64'
       />
