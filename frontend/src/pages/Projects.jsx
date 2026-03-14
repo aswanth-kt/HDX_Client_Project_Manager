@@ -16,7 +16,7 @@ function Projects() {
     const fetchProject = async () => {
       try {
 
-        const res = await axios.get(`/api/project/get-project?name=${onSearch || ""}`);
+        const res = await axios.get(`/api/project/get-project?search=${onSearch || ""}`);
         
         setProjects(res.data.projects)
         
@@ -28,6 +28,8 @@ function Projects() {
     fetchProject();
 
   }, [onSearch]);
+
+  console.log("on search:", onSearch)
 
   return (
     <MainLayout>
@@ -48,7 +50,11 @@ function Projects() {
 
       <Search setOnSearch={setOnSearch} />
 
-      <select name="" id="" className='border p-2 mb-4'>
+      <select 
+        className='border p-2 mb-4'
+        value={onSearch}
+        onChange={(e) => setOnSearch(e.target.value)}
+      >
 
         <option value="">All</option>
         <option value="Pending">Pending</option>

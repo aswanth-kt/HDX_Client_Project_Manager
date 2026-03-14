@@ -84,8 +84,6 @@ const AddProject = () => {
     setLoading(false);
   };
 
-  console.log("add project", addProject)
-
   return (
     <MainLayout>
 

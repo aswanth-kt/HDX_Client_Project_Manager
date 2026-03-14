@@ -51,16 +51,27 @@ export const createProject = async (req, res) => {
 export const getProjects = async (req, res) => {
   try {
 
-    const { name, status } = req.query;
+    const { search } = req.query;
+    console.log("search", search)
 
     const page = parseInt(req.query.page) || 1;
     const limit = Math.min(parseInt(req.query.limit) || 10 , 20);
     const skip = (page - 1) * limit;
 
-    const filter = {};
+    let filter = {};
 
-    if (name && name.trim()) filter.name = { $regex: name, $options: "i" };
-    if (status) filter.status = { $regex: status, $options: "i" };
+    if (search) {
+      filter = {
+        $or: [
+          { status: {$regex: search, $options: "i" } },
+          { name: {$regex: search, $options: "i" } },
+        ]
+      }
+    }
+    console.log("filter:", filter.$or)
+
+    // if (name && name.trim()) filter.name = { $regex: name, $options: "i" };
+    // if (status && status.trim()) filter.status = { $regex: status, $options: "i" };
 
     const projects = await Project.find(filter)
     .populate("client", "name")
