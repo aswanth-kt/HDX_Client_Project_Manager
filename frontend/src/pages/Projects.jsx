@@ -9,14 +9,15 @@ import axios from "../api/axios";
 function Projects() {
 
   const [projects, setProjects] = useState([])
-  const [onSearch, setOnSearch] = useState();
+  const [onSearch, setOnSearch] = useState("");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
 
     const fetchProject = async () => {
       try {
 
-        const res = await axios.get(`/api/project/get-project?search=${onSearch || ""}`);
+        const res = await axios.get(`/api/project/get-project?search=${onSearch || ""}&status=${status || ""}`);
         
         setProjects(res.data.projects)
         
@@ -27,7 +28,7 @@ function Projects() {
 
     fetchProject();
 
-  }, [onSearch]);
+  }, [onSearch, status]);
 
   console.log("on search:", onSearch)
 
@@ -52,8 +53,8 @@ function Projects() {
 
       <select 
         className='border p-2 mb-4'
-        value={onSearch}
-        onChange={(e) => setOnSearch(e.target.value)}
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
       >
 
         <option value="">All</option>
