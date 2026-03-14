@@ -16,12 +16,6 @@ const Navbar = ({ setOpen }) => {
         ☰
       </button>
 
-      {/* <h2
-        className="border px-3 py-1 rounded"
-      >
-        Client Manager App
-      </h2> */}
-
       <div className="font-medium">
         { user ? `Hi ${user.name}!` : "Hi, User!" }
       </div>

@@ -159,7 +159,7 @@ export const updateClient = async (req, res) => {
     // update provided fields
     if (name) client.name = name;
     if (company) client.company = company;
-    if (email) client.email = email;
+    if (email) client.email = email.toLowerCase();
     if (phone) client.phone = phone;
     if (projectType) client.projectType = projectType;
 
