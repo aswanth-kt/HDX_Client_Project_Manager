@@ -21,33 +21,23 @@ const AddProject = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchDevelopers = async () => {
+    const fetchDropdownData = async () => {
       try {
 
-        const res = await axios.get("/api/developer/get-developers");
+        const [devRes, clientRes] = await Promise.all([
+          axios.get("/api/developer/get-developers"),
+          axios.get("/api/client/get-clients")
+        ]) 
 
-        setDevelopers(res.data.developers);
+        setDevelopers(devRes.data.developers);
+        setClients(clientRes.data.clients);
         
       } catch (error) {
         console.log(error);
       }
     };
 
-    const fetchClients = async () => {
-      try {
-
-        const res = await axios.get("/api/client/get-clients");
-
-        setClients(res.data.clients);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-  
-    fetchDevelopers();
-    fetchClients();
+    fetchDropdownData();
 
   }, []);
 
@@ -93,6 +83,8 @@ const AddProject = () => {
 
     setLoading(false);
   };
+
+  console.log("add project", addProject)
 
   return (
     <MainLayout>
