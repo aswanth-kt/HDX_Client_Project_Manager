@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Project } from "../models/project.model.js";
-import { json } from "express";
+import { Client } from "../models/client.model.js";
 
 
 export const createProject = async (req, res) => {
@@ -92,3 +92,38 @@ export const getProjects = async (req, res) => {
     })
   }
 };
+
+
+export const dashboard = async (req, res) => {
+  try {
+
+    const totalClientsCount = await Client.countDocuments();
+
+    const totalActiveProjectCount = await Project.countDocuments({
+      status: "In Progress"
+    });
+
+    const totalCompletedProjectCount = await Project.countDocuments({
+      status: "Completed"
+    });
+
+    const counts = {
+      totalClientsCount,
+      totalActiveProjectCount,
+      totalCompletedProjectCount,
+    }
+
+    return res.status(200).json({
+      success: true,
+      counts,
+      message: "Dashboard data fetched"
+    })
+    
+  } catch (error) {
+    console.error("Dashboard error:", error?.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    })
+  }
+}

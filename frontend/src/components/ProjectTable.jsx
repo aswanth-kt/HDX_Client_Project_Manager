@@ -19,8 +19,8 @@ const ProjectTable = ({ projects }) => {
           return (
             <tr key={project._id} className='border-t'>
               <td className='p-2'>{project.name}</td>
-              <td className='p-2'>{project.client.name}</td>
-              <td className='p-2'>{project.assignedTo.name}</td>
+              <td className='p-2'>{project?.client?.name}</td>
+              <td className='p-2'>{project?.assignedTo?.name}</td>
               <td className='p-2'>{new Date(project.deadline).toLocaleDateString()}</td>
               <td className='p-2'>{project.status}</td>
             </tr>
