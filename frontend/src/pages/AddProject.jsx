@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout';
 import axios from "../api/axios";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const AddProject = () => {
 
+  const [loading, setLoading] = useState(false);
   const [developers, setDevelopers] = useState([]);
   const [clients, setClients] = useState([]);
   const [addProject, setAddProject] = useState({
@@ -62,6 +64,10 @@ const AddProject = () => {
 
     e.preventDefault();
 
+    if (loading) return;
+
+    setLoading(true);
+
     try {
 
       const res = await axios.post("/api/project/create-project", {
@@ -74,14 +80,19 @@ const AddProject = () => {
 
       console.log("Add project res:", res.data);
 
-      navigate("/projects")
+      if (res.status === 201) {
+        navigate("/projects")
+        return toast.success(res.data?.message || "New project created")
+      };
+
+      toast.warn(res.data?.message || "Something went wrong")
       
     } catch (error) {
       console.log(error);
-    }
-  }
+    };
 
-  console.log("add project data:", addProject)
+    setLoading(false);
+  };
 
   return (
     <MainLayout>
@@ -180,9 +191,10 @@ const AddProject = () => {
 
         <button
           type='submit'
+          disabled={loading}
           className='w-full bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700'
         >
-          Create Project
+          {loading ? "Creating" : "Create Project"}
         </button>
 
       </form>
