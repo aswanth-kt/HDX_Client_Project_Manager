@@ -8,39 +8,52 @@ import Register from './pages/Register'
 import ProtectedRoutes from './routes/protectedRoutes'
 import RoleRoutes from './routes/RoleRoutes'
 import PageNotFound from './pages/PageNotFound'
+import AddProject from './pages/AddProject'
 
 function App() {
 
   return (
    <>
     <Routes>
+
       <Route path='*' element={<PageNotFound />} />
+
       <Route path='/' element={<Login />} />
+
       <Route path='/register' element={<Register />} />
-      <Route 
-        path='/dashboard' 
+
+      <Route path='/dashboard' 
         element={
           <RoleRoutes allowedRoles={["admin"]}>
             <Dashboard />
           </RoleRoutes>
         } 
       />
-      <Route 
-        path='/clients' 
+
+      <Route path='/clients' 
         element={
           <RoleRoutes allowedRoles={["admin"]}>
             <Clients />
           </RoleRoutes>
         }
         />
-      <Route 
-        path='/projects'
+
+      <Route path='/projects'
         element={
           <RoleRoutes allowedRoles={["admin"]}>
             <Projects />
           </RoleRoutes>
         }
       />
+
+      <Route path='/projects/add'
+        element={
+          <RoleRoutes allowedRoles={["admin"]}>
+            <AddProject />
+          </RoleRoutes>
+        }
+      />
+
     </Routes>
    </>
   )

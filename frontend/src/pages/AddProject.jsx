@@ -1,0 +1,196 @@
+import React, { useEffect, useState } from 'react'
+import MainLayout from '../components/layout/MainLayout';
+import axios from "../api/axios";
+import { useNavigate } from 'react-router-dom';
+
+
+const AddProject = () => {
+
+  const [developers, setDevelopers] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [addProject, setAddProject] = useState({
+    name: "",
+    client: "",
+    assignedTo: "",
+    deadline: "",
+    description: ""
+  });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDevelopers = async () => {
+      try {
+
+        const res = await axios.get("/api/developer/get-developers");
+
+        setDevelopers(res.data.developers);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchClients = async () => {
+      try {
+
+        const res = await axios.get("/api/client/get-clients");
+
+        setClients(res.data.clients);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+  
+    fetchDevelopers();
+    fetchClients();
+
+  }, []);
+
+  // add values in addProject state
+  const handleChange = (e) => {
+    console.log("e", e.target.name, e.target.value)
+    setAddProject({
+      ...addProject,
+      [e.target.name]: e.target.value
+    })
+  };
+
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      const res = await axios.post("/api/project/create-project", {
+        name: addProject.name,
+        client: addProject.client,
+        assignedTo: addProject.assignedTo,
+        deadline: addProject.deadline,
+        description: addProject.description
+      });
+
+      console.log("Add project res:", res.data);
+
+      navigate("/projects")
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log("add project data:", addProject)
+
+  return (
+    <MainLayout>
+
+    <div className='max-e-2xl mx-auto bg-white shadow rounded p-6'>
+
+      <h2 className='text-2xl font-bold mb-6'>
+        Add project
+      </h2>
+
+      <form onSubmit={handleSubmit} className='space-y-4'>
+
+        {/* poroject name */}
+        <div>
+          <label className='block mb-1 font-medium'>
+            Project Name
+          </label>
+
+          <input type="text"
+            className='w-full border p-2 ronded'
+            name='name'
+            value={addProject.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* client name */}
+        <div>
+          <label className='block mb-1 font-medium'>
+            Client
+          </label>
+
+          <select
+            value={addProject.client}
+            name='client'
+            className='w-full border p-2 rounded'
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>Select Client</option>
+            {clients.map((client) => 
+              <option key={client._id} value={client._id}>{client.name}</option>
+            )}
+          </select>
+        </div>
+
+        {/* assinged to */}
+        <div>
+          <label className='block mb-1 font-medium'>
+            Assign Developer
+          </label>
+
+          <select
+            name='assignedTo'
+            value={addProject.assignedTo}
+            className='w-full border p-2 rounded'
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>Select Developer</option>
+            {developers.map((dev) => 
+              <option key={dev._id} value={dev._id}>{dev.name}</option>
+            )}
+          </select>
+        </div>
+
+        {/* deadline */}
+        <div>
+          <label className='block mb-1 font-medium'>
+            Deadline
+          </label>
+
+          <input type="date"
+            className='w-full border p-2 ronded'
+            name='deadline'
+            value={addProject.deadline}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* description */}
+        <div>
+          <label className='block mb-1 font-medium'>
+            Project Description
+          </label>
+
+          <input type="text"
+            className='w-full border p-2 ronded'
+            name='description'
+            value={addProject.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button
+          type='submit'
+          className='w-full bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700'
+        >
+          Create Project
+        </button>
+
+      </form>
+
+    </div>
+
+    </MainLayout>
+  )
+}
+
+export default AddProject

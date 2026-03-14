@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import MainLayout from '../components/layout/MainLayout'
 import Search from '../components/Search'
 import ProjectTable from '../components/ProjectTable'
@@ -37,9 +38,11 @@ function Projects() {
           Project
         </h1>
 
-        <button className='bg-blue-600 text-white px-4 py-2 rounded'>
+        <Link className='bg-blue-600 text-white px-4 py-2 rounded'
+          to="/projects/add"
+        >
           Add Project
-        </button>
+        </Link>
 
       </div>
 

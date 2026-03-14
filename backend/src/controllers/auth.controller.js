@@ -148,7 +148,7 @@ export const getMe = async (req, res) => {
     })
     
   } catch (error) {
-    console.error("Login error:", error?.message || error);
+    console.error("getme error:", error?.message || error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error"
@@ -168,7 +168,7 @@ export const logout = async (req, res) => {
     })
     
   } catch (error) {
-    console.error("Login error:", error?.message || error);
+    console.error("Logout error:", error?.message || error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error"

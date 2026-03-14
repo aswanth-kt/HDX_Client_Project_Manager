@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 const Search = ({ setOnSearch }) => {
 
-  // const [projectQuery, setProjectQuery] = useState("");
-  // const [clientQuery, setClientQuery] = useState("");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
