@@ -104,6 +104,43 @@ export const getAllClients = async (req, res) => {
 };
 
 
+export const getClient = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Id"
+      })
+    };
+
+    const client = await Client.findById(id);
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        message: "Client not found"
+      })
+    };
+
+    return res.status(200).json({
+      success: true,
+      message: "Client fetched",
+      client
+    })
+    
+  } catch (error) {
+    console.error("get client error:", error?.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+};
+
+
 export const updateClient = async (req, res) => {
   try {
 
@@ -176,4 +213,4 @@ export const deleteClient = async (req, res) => {
       message: "Internal Server Error"
     })
   }
-}
+};

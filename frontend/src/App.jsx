@@ -10,6 +10,7 @@ import RoleRoutes from './routes/RoleRoutes'
 import PageNotFound from './pages/PageNotFound'
 import AddProject from './pages/AddProject'
 import AddClient from './pages/AddClient'
+import EditClient from './pages/EditClient'
 
 function App() {
 
@@ -43,6 +44,14 @@ function App() {
         element={
           <RoleRoutes allowedRoles={["admin"]}>
             <AddClient />
+          </RoleRoutes>
+        }
+      />
+
+      <Route path='/clients/edit/:id' 
+        element={
+          <RoleRoutes allowedRoles={["admin"]}>
+            <EditClient />
           </RoleRoutes>
         }
       />

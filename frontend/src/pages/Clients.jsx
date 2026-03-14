@@ -2,12 +2,20 @@ import React, { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
 import Search from '../components/Search'
 import axios from "../api/axios";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
+
+
+const mySwal = withReactContent(Swal);
 
 const Clients = () => {
 
   const [clients, setClients] = useState([]);
   const [onSearch, setOnSearch] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     
@@ -30,6 +38,42 @@ const Clients = () => {
     fetchClients();
 
   }, [onSearch]);
+
+  const handleDelete = async (id) => {
+    try {
+
+      const confirmDelete = await mySwal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete",
+        cancelButtonText: "Cancel"
+      });
+
+      if (!confirmDelete.isConfirmed) {
+        return toast.warn("Client still exists");
+      }
+
+      const res = await axios.delete(`/api/client/delete-client/${id}`);
+
+      if (res.status === 200) {
+
+        // remove deleted client from UI
+        setClients(prev =>
+          prev.filter(client => client._id !== id)
+        );
+
+        toast.success(res.data?.message || "Deleted");
+        return;
+      }
+
+      toast.warn(res.data?.message);
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <MainLayout>
@@ -74,8 +118,20 @@ const Clients = () => {
                   <td className='p-2'>{client.phone}</td>
 
                   <td className='p-2'>
-                    <button className='text-blue-500 mr-3'>Edit</button>
-                    <button className='text-red-500 mr-3'>Delete</button>
+                    <button 
+                      className='text-blue-500 mr-3'
+                      onClick={() => navigate(`/clients/edit/${client._id}`)}  
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className='text-red-500 mr-3'
+                      onClick={() => handleDelete(client._id)}
+                    >
+                      Delete
+                    </button>
+
                   </td>
                 </tr>
               )
