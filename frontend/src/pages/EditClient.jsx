@@ -25,7 +25,8 @@ const EditClient = () => {
 
         const res = await axios.get(`/api/client/get-client/${id}`);
 
-        console.log("edit client res:", res.data)
+        // console.log("edit client res:", res.data)
+        
         setClient(res.data.client)
         
       } catch (error) {
