@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       
     } catch (error) {
       
-      console.log(error?.message || error);
+      console.error(error?.message || error);
 
     }
   }

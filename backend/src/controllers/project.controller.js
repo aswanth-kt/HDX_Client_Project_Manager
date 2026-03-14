@@ -30,7 +30,7 @@ export const createProject = async (req, res) => {
       description: description ? description : undefined
     });
 
-    console.log("project:", project);
+    // console.log("project:", project);
 
     return res.status(201).json({
       success: true,

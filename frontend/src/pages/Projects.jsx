@@ -30,7 +30,7 @@ function Projects() {
 
   }, [onSearch, status]);
 
-  console.log("on search:", onSearch)
+  // console.log("on search:", onSearch)
 
   return (
     <MainLayout>

@@ -36,7 +36,7 @@ const AddClient = () => {
         projectType: client.projectType
       });
 
-      console.log("Add clint res:", res.data);
+      // console.log("Add clint res:", res.data);
       
       if (res.status === 201) {
         navigate("/clients")

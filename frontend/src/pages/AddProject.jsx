@@ -33,7 +33,7 @@ const AddProject = () => {
         setClients(clientRes.data.clients);
         
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -43,11 +43,12 @@ const AddProject = () => {
 
   // add values in addProject state
   const handleChange = (e) => {
-    console.log("e", e.target.name, e.target.value)
+
     setAddProject({
       ...addProject,
       [e.target.name]: e.target.value
     })
+
   };
 
   const handleSubmit = async (e) => {
@@ -68,7 +69,7 @@ const AddProject = () => {
         description: addProject.description
       });
 
-      console.log("Add project res:", res.data);
+      // console.log("Add project res:", res.data);
 
       if (res.status === 201) {
         navigate("/projects")
@@ -78,7 +79,7 @@ const AddProject = () => {
       toast.warn(res.data?.message || "Something went wrong")
       
     } catch (error) {
-      console.log(error);
+      console.error(error);
     };
 
     setLoading(false);

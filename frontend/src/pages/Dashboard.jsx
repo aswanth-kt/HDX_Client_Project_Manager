@@ -33,7 +33,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  console.log("dashboard:", counts)
+  // console.log("dashboard:", counts)
 
   return (
     <MainLayout>
