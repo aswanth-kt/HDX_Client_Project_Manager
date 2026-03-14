@@ -21,7 +21,7 @@ const clientSchema = new Schema(
     },
     projectType: {
       type: String,
-      enum: ["website", "e-commerce", "web-app", "mobile-app"],
+      enum: ["Website", "E-commerce", "Web App", "Mobile App", "Desktop Application", "SaaS Platform", "AI Chatbot", "Job Portal", "Messaging App", "Restaurant Management System"],
       required: true,
     }
   }, { timestamps: true }

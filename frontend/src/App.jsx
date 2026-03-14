@@ -9,6 +9,7 @@ import ProtectedRoutes from './routes/protectedRoutes'
 import RoleRoutes from './routes/RoleRoutes'
 import PageNotFound from './pages/PageNotFound'
 import AddProject from './pages/AddProject'
+import AddClient from './pages/AddClient'
 
 function App() {
 
@@ -36,7 +37,15 @@ function App() {
             <Clients />
           </RoleRoutes>
         }
-        />
+      />
+
+      <Route path='/clients/add' 
+        element={
+          <RoleRoutes allowedRoles={["admin"]}>
+            <AddClient />
+          </RoleRoutes>
+        }
+      />
 
       <Route path='/projects'
         element={

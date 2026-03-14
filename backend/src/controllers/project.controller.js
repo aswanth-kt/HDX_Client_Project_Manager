@@ -52,7 +52,6 @@ export const getProjects = async (req, res) => {
   try {
 
     const { search, status } = req.query;
-    console.log("search", search)
 
     const page = parseInt(req.query.page) || 1;
     const limit = Math.min(parseInt(req.query.limit) || 10 , 20);

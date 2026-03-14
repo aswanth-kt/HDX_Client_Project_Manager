@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
 import Search from '../components/Search'
 import axios from "../api/axios";
+import { Link } from 'react-router-dom';
 
 const Clients = () => {
 
@@ -39,9 +40,9 @@ const Clients = () => {
           Clients
         </h1>
 
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">
+        <Link to="/clients/add" className="bg-blue-600 text-white px-4 py-2 rounded">
           Add Client
-        </button>
+        </Link>
 
       </div>
 
@@ -55,6 +56,7 @@ const Clients = () => {
             <tr>
               <th className='p-2 text-left'>Name</th>
               <th className='p-2 text-left'>Company</th>
+              <th className='p-2 text-left'>Project Type</th>
               <th className='p-2 text-left'>Email</th>
               <th className='p-2 text-left'>Phone</th>
               <th className='p-2 text-left'>Actions</th>
@@ -67,6 +69,7 @@ const Clients = () => {
                 <tr key={client._id} className='border-t'>
                   <td className='p-2'>{client.name}</td>
                   <td className='p-2'>{client.company}</td>
+                  <td className='p-2'>{client.projectType}</td>
                   <td className='p-2'>{client.email}</td>
                   <td className='p-2'>{client.phone}</td>
 
