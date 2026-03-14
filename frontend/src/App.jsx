@@ -7,12 +7,14 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ProtectedRoutes from './routes/protectedRoutes'
 import RoleRoutes from './routes/RoleRoutes'
+import PageNotFound from './pages/PageNotFound'
 
 function App() {
 
   return (
    <>
     <Routes>
+      <Route path='*' element={<PageNotFound />} />
       <Route path='/' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route 
