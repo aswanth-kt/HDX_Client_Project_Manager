@@ -1,7 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
+import axios from "../api/axios";import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+;
 
 const AddClient = () => {
+
+  const [client, setClient] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    projectType: ""
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setClient({
+      ...client,
+      [e.target.name]: e.target.value
+    })
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      const res = await axios.post("/api/client/add-client", {
+        name: client.name,
+        company: client.company,
+        email: client.email,
+        phone: client.phone,
+        projectType: client.projectType
+      });
+
+      console.log("Add clint res:", res.data);
+      
+      if (res.status === 201) {
+        navigate("/clients")
+        return toast.success(res.data?.message || "New client created")
+      }
+
+      toast.warn(res.data?.message || "Something went wrong")
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <MainLayout>
 
@@ -11,7 +59,7 @@ const AddClient = () => {
           Add Client
         </h2>
 
-        <form className='space-y-4'>
+        <form onSubmit={handleSubmit} className='space-y-4'>
 
           {/* client name */}
           <div>
@@ -22,6 +70,9 @@ const AddClient = () => {
             <input 
               type="text" 
               className='w-full border rounded p-2'
+              name='name'
+              value={client.name}
+              onChange={handleChange}
               required  
             />
           </div>
@@ -35,6 +86,9 @@ const AddClient = () => {
             <input 
               type="text" 
               className='w-full border rounded p-2'
+              name='company'
+              value={client.company}
+              onChange={handleChange}
               required  
             />
           </div>
@@ -48,6 +102,9 @@ const AddClient = () => {
             <input 
               type="email" 
               className='w-full border rounded p-2'
+              name='email'
+              value={client.email}
+              onChange={handleChange}
               required  
             />
           </div>
@@ -61,6 +118,9 @@ const AddClient = () => {
             <input 
               type="tel" 
               className='w-full border rounded p-2'
+              name='phone'
+              value={client.phone}
+              onChange={handleChange}
               required  
             />
           </div>
@@ -73,6 +133,9 @@ const AddClient = () => {
 
             <select
             className='w-full border rounded p-2'
+            name='projectType'
+            value={client.projectType}
+            onChange={handleChange}
             >
               <option value="">Select Project Type</option>
               <option value="Website">Website</option>

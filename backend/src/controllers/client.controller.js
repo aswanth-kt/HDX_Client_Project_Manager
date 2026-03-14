@@ -28,7 +28,7 @@ export const addClient = async (req, res) => {
       company,
       email: email?.toLowerCase(),
       phone,
-      projectType: projectType?.toLowerCase(),
+      projectType: projectType,
     });
 
     if (!client) {
@@ -77,6 +77,7 @@ export const getAllClients = async (req, res) => {
     };
     
     const clients = await Client.find(filter)
+    .sort({ createdAt: -1})
     .skip(skip)
     .limit(limit);
 
