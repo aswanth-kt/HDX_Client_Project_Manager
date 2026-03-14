@@ -11,6 +11,7 @@ import PageNotFound from './pages/PageNotFound'
 import AddProject from './pages/AddProject'
 import AddClient from './pages/AddClient'
 import EditClient from './pages/EditClient'
+import AssignedProjects from './pages/AssignedProjects'
 
 function App() {
 
@@ -68,6 +69,14 @@ function App() {
         element={
           <RoleRoutes allowedRoles={["admin"]}>
             <AddProject />
+          </RoleRoutes>
+        }
+      />
+
+      <Route path='/developer/projects'
+        element={
+          <RoleRoutes allowedRoles={["developer"]}>
+            <AssignedProjects />
           </RoleRoutes>
         }
       />

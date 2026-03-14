@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setUser, loading } = useAuth();
+  const { user, setUser, loading } = useAuth();
   // console.log("context loading:", loading)
 
   const navigate = useNavigate();
@@ -28,7 +28,9 @@ const Login = () => {
 
       setUser(res.data.loggedinUser)    // store logged user in context
 
-      navigate("/dashboard");
+      res.data.loggedinUser.role === "admin" 
+      ? navigate("/dashboard")
+      : navigate("/developer/projects");
       
     } catch (error) {
       console.error(error.response?.data?.message || error);
