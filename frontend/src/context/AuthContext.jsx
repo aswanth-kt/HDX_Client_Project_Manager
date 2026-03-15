@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         const res = await axios.get("/api/auth/me");
 
         setUser(res.data.user);
-        console.log("auth res", res.data)
+        // console.log("auth res", res.data)
         
       } catch (error) {
 
@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchUser();
+
   }, []);
 
   //logout function

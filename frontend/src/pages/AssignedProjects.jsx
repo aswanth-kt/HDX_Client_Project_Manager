@@ -1,6 +1,6 @@
-import React, { Profiler, useEffect, useState } from 'react'
-import MainLayout from "../components/layout/MainLayout"
+import React, { useEffect, useState } from 'react'
 import axios from "../api/axios"
+import Navbar from '../components/Navbar';
 
 
 const AssignedProjects = () => {
@@ -14,7 +14,7 @@ const AssignedProjects = () => {
           
         const res = await axios.get("/api/project/get-project");
 
-        console.log("project:", res.data.projects)
+        // console.log("project:", res.data.projects)
         setProjects(res.data.projects);
 
       } catch (error) {
@@ -28,7 +28,10 @@ const AssignedProjects = () => {
   }, [])
 
   return (
-    <MainLayout>
+    
+    <>
+
+      <Navbar />
 
       <div className='bg-white shadow rounded p-6'>
 
@@ -57,7 +60,7 @@ const AssignedProjects = () => {
                 <tr key={project._id} className='border-t'>
 
                   <td className='p=2'>{project.name}</td>
-                  <td className='p=2'>{project.client.name}</td>
+                  <td className='p=2'>{project.client?.name}</td>
                   <td className='p=2'>{new Date(project.deadline).toLocaleDateString()}</td>
 
                   <td className='p=2'>
@@ -83,7 +86,7 @@ const AssignedProjects = () => {
         
       </div>
 
-    </MainLayout>
+    </>
   )
 }
 
