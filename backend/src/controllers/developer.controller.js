@@ -42,14 +42,6 @@ export const getAssignedProjects = async (req, res) => {
       })
     };
 
-    // const assignedProjects = await Project.aggregate([
-    //   {
-    //     $match: {
-    //       assignedTo: id
-    //     }
-    //   }
-    // ]);
-
     const assignedProjects = await Project.find({
       assignedTo: userId
     })

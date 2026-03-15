@@ -112,8 +112,9 @@ export const login = async (req, res) => {
       secure: true,
     };
 
+    res.cookie("accessToken", accessToken, options)
+
     return res.status(200)
-    .cookie("accessToken", accessToken, options)
     .json({
       success: true,
       message: "Loggedin successfully",
