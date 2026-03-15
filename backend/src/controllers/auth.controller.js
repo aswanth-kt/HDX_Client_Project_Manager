@@ -108,7 +108,7 @@ export const login = async (req, res) => {
 
     const options = {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
       secure: true,
     };
 
