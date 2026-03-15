@@ -110,8 +110,10 @@ function Register() {
         <button 
           type='submit'
           disabled={loading}
-          className='bg-blue-600 text-white w-full py-2 rounded'
+          className='bg-blue-600 text-white w-full py-2 rounded disabled:opacity-70 flex items-center justify-center gap-2'
         >
+          <span className={`${loading ? "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" : ""}`}/>
+
           { loading ? "Registering..." : "Register" }
         </button>
 

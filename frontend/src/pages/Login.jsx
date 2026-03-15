@@ -73,9 +73,11 @@ const Login = () => {
 
         <button 
         type='submit' 
-        className='bg-blue-600 text-white w-full py-2 rounded'
+        className='bg-blue-600 text-white w-full py-2 rounded disabled:opacity-70 flex items-center justify-center gap-2'
         disabled={loading}
         >
+          <span className={`${loading ? "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" : ""}`} />
+          
           {!loading ? "Login" : "Logging..."}
         </button>
 

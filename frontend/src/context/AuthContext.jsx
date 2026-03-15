@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../api/axios";
+import Loading from "../components/Loading";
 
 const AuthContext = createContext();
 
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, logout, loading }}>
-      {!loading && children}
+      {loading ? <Loading /> : children}
     </AuthContext.Provider>
   );
 };

@@ -3,11 +3,7 @@ import { useAuth } from "../context/AuthContext"
 
 const RoleRoutes = ({ children, allowedRoles }) => {
 
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  const { user } = useAuth();
 
   // not loggedin
   if (!user) {
@@ -16,7 +12,7 @@ const RoleRoutes = ({ children, allowedRoles }) => {
 
   // if not allowed role redirect
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to='/' />
+    return <Navigate to='/' replace />
   }
 
   // permission allowed
