@@ -6,16 +6,17 @@ const RoleRoutes = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return null;
+    return <div>Loading...</div>
   }
 
+  // not loggedin
   if (!user) {
     return <Navigate to="/" replace />
   }
 
   // if not allowed role redirect
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/" />
+    return <Navigate to='/' />
   }
 
   // permission allowed

@@ -133,6 +133,13 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
 
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized"
+      });
+    }
+
     const user = await User.findById(req?.user?._id)
     .select("-password");
 
