@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import axios from "../api/axios"
 import Navbar from '../components/Navbar';
+import { toast } from 'react-toastify';
 
 
 const AssignedProjects = () => {
 
-  const [projects, setProjects] = useState([]);;
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
 
     const fetchProjects = async () => {
       try {
           
-        const res = await axios.get("/api/project/get-project");
+        const { data } = await axios.get("/api/developer/assigned-projects");
 
-        // console.log("project:", res.data.projects)
-        setProjects(res.data.projects);
+        // console.log("projects:", data.assignedProjects);
+
+        setProjects(data?.assignedProjects);
 
       } catch (error) {
         console.error(error)
@@ -25,7 +27,40 @@ const AssignedProjects = () => {
 
     fetchProjects();
 
-  }, [])
+  }, []);
+
+  const handleStatus = async (e, id) => {
+    try {
+      const newStatus = e.target.value;
+
+      // console.log(`status: ${newStatus}, id: ${id}`);
+
+      const res = await axios.patch(`/api/developer/change-status/${id}`, {
+        status: newStatus
+      });
+
+      // console.log("edit status res:", res.data);
+
+      if (res.status === 200) {
+        // update UI status
+        setProjects((preProjects) => 
+          preProjects.map((project) => 
+            project._id  === id 
+            ? {...project, status: newStatus}
+            : project
+          )
+        );
+
+        toast.success(res.data?.message || "Status changed");
+        return;
+      };
+
+      toast.warn(res.data?.message || "Something went wrong")
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     
@@ -54,18 +89,28 @@ const AssignedProjects = () => {
             </thead>
 
             <tbody>
+              {/* If no assigne project */}
+              {projects.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="text-center p-4">
+                    No projects assigned
+                  </td>
+                </tr>
+              )}
 
               {projects.map((project) => 
 
                 <tr key={project._id} className='border-t'>
 
-                  <td className='p=2'>{project.name}</td>
-                  <td className='p=2'>{project.client?.name}</td>
-                  <td className='p=2'>{new Date(project.deadline).toLocaleDateString()}</td>
+                  <td className='p-2'>{project.name}</td>
+                  <td className='p-2'>{project.client?.name}</td>
+                  <td className='p-2'>{new Date(project.deadline).toLocaleDateString()}</td>
 
-                  <td className='p=2'>
+                  <td className='p-2'>
                     <select 
                       className='border p-1 rounded'
+                      value={project.status}
+                      onChange={(e) => handleStatus(e, project._id)}
                     >
                       <option value="Pending">Pending</option>
                       <option value="In Progress">In Progress</option>
