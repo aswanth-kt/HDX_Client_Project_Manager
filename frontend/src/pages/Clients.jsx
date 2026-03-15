@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MainLayout from '../components/layout/MainLayout'
 import Search from '../components/Search'
 import axios from "../api/axios";
