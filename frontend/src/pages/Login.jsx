@@ -37,7 +37,7 @@ const Login = () => {
       };
       
     } catch (error) {
-      setError(error?.message || "Login failed")
+      setError(error?.response?.data?.message || "Login failed")
       console.error(error);
     } finally {
       setLoading(false);
