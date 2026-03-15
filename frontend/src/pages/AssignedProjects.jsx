@@ -16,7 +16,7 @@ const AssignedProjects = () => {
           
         const { data } = await axios.get("/api/developer/assigned-projects");
 
-        // console.log("projects:", data.assignedProjects);
+        console.log("projects:", data.assignedProjects);
 
         setProjects(data?.assignedProjects);
 
