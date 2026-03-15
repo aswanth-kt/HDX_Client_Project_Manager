@@ -44,13 +44,13 @@ const Navbar = ({ setOpen }) => {
         </button>
       )}
 
-      <div className="font-medium">
+      <div className="font-medium px-4 py-1">
         { user ? `Hi ${user.name}!` : "Hi, User!" }
       </div>
 
       {user.role === "developer" && (
         <button 
-          className='text-red-400 mr-6'
+          className='text-white mr-6 px-4 py-1 bg-red-500 rounded hover:bg-red-700'
           onClick={handleLogout}
         >
           Logout

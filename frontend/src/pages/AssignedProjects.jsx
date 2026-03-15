@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "../api/axios"
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
+import { handleStatusStyle } from '../utils/statusStyle';
 
 
 const AssignedProjects = () => {
@@ -108,13 +109,26 @@ const AssignedProjects = () => {
 
                   <td className='p-2'>
                     <select 
-                      className='border p-1 rounded'
+                      className={`border p-1 rounded ${handleStatusStyle(project.status)}`}
                       value={project.status}
                       onChange={(e) => handleStatus(e, project._id)}
                     >
-                      <option value="Pending">Pending</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
+                      <option value="Pending" 
+                        className={`${handleStatusStyle("Pending")}`}>
+                          Pending
+                      </option>
+                      <option 
+                        value="In Progress"
+                        className={`${handleStatusStyle("In Progress")}`}
+                        >
+                          In Progress
+                      </option>
+                      <option 
+                        value="Completed"
+                        className={`${handleStatusStyle("Completed")}`}
+                      >
+                        Completed
+                      </option>
                     </select>
                   </td>
 
