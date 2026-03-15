@@ -8,10 +8,10 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const { user, setUser, loading } = useAuth();
-  // console.log("context loading:", loading)
-
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,6 +19,8 @@ const Login = () => {
     e.preventDefault();
 
     try {
+
+      setLoading(true);
 
       const res = await axios.post("/api/auth/login",
         { email, password }
@@ -28,16 +30,21 @@ const Login = () => {
 
       setUser(res.data.loggedinUser)    // store logged user in context
 
-      res.data.loggedinUser.role === "admin" 
-      ? navigate("/dashboard")
-      : navigate("/developer/projects");
+      if (res.data?.loggedinUser?.role === "admin") {
+        navigate("/dashboard")
+      } else {
+        navigate("/developer/projects");
+      };
       
     } catch (error) {
-      console.error(error.response?.data?.message || error);
+      setError(error?.message || "Login failed")
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
+
   };
 
-  if (loading) return <div>Loading...</div>
 
   return (
     <div className='flex items-center justify-center h-screen bg-gray-100'>
@@ -49,18 +56,26 @@ const Login = () => {
         </h2>
 
         <input type="email"
+        value={email}
         placeholder='Email'
         className='border p-2 w-full mb-4'
+        required
         onChange={(e) => setEmail(e.target.value)}
         />
 
         <input type="password"
+        value={password}
         placeholder='Password'
         className='border p-2 w-full mb-4'
+        required
         onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type='submit' className='bg-blue-600 text-white w-full py-2 rounded'>
+        <button 
+        type='submit' 
+        className='bg-blue-600 text-white w-full py-2 rounded'
+        disabled={loading}
+        >
           {!loading ? "Login" : "Logging..."}
         </button>
 
@@ -68,6 +83,10 @@ const Login = () => {
           No account?
           <Link to="/register" className='text-blue-500'> Register</Link>
         </p>
+
+        {error && (
+          <p className='text-red-500 text-sm mt-3 text-center'>{error}</p>
+        )}
 
       </form>
 
