@@ -85,7 +85,6 @@ export const editProjectStatus = async (req, res) => {
 
     const { id } = req.params;
     const { status } = req.body;
-    console.log(id, status)
 
     if (!status || !status.trim()) {
       return res.status(400).json({

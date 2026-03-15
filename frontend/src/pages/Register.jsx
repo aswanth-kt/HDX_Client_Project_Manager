@@ -33,7 +33,7 @@ function Register() {
         role
       });
 
-      console.log("reg res:", res)
+      // console.log("reg res:", res)
 
       if (res.status === 201) {
 

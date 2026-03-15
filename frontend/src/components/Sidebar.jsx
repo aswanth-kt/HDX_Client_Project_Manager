@@ -1,14 +1,36 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import Swal from "sweetalert2"
+import withReactContent from "sweetalert2-react-content"
 
+
+
+const logoutSwal = withReactContent(Swal);
 
 const Sidebar = ({ open, setOpen }) => {
 
   const { logout } = useAuth();
 
   const handleLogout = async () => {
-    await logout();
+    try {
+
+      const confirmLogout = await logoutSwal.fire({
+        title: "Are you sure?",
+        text: "Are you sure? You'll need to login again to access your account",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Logout",
+        cancelButtonText: "Cancel"
+      });
+
+      if (!confirmLogout.isConfirmed) return;
+
+      await logout();
+      
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

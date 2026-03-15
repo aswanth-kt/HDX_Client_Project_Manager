@@ -200,7 +200,7 @@ export const deleteClient = async (req, res) => {
       })
     };
 
-    console.log("Deleted client:", deletedClient)
+    // console.log("Deleted client:", deletedClient)
 
     return res.status(200).json({
       success: true,
