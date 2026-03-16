@@ -112,7 +112,7 @@ const AddClient = () => {
           {/* Phone */}
           <div>
             <label className='block mb-1 font-medium'>
-              Mobile Nuber
+              Mobile Number
             </label>
 
             <input 
