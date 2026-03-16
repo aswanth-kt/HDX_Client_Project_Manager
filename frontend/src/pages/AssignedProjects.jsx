@@ -3,31 +3,25 @@ import axios from "../api/axios"
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { handleStatusStyle } from '../utils/statusStyle';
-import Loading from '../components/Loading';
 
 
 const AssignedProjects = () => {
 
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
     const fetchProjects = async () => {
       try {
-
-        setLoading(true);
           
         const { data } = await axios.get("/api/developer/assigned-projects");
 
-        console.log("projects:", data.assignedProjects);
+        // console.log("projects:", data.assignedProjects);
 
         setProjects(data?.assignedProjects);
 
       } catch (error) {
         console.error(error)
-      } finally {
-        setLoading(false);
       }
         
       };

@@ -19,7 +19,7 @@ const Dashboard = () => {
 
         const res = await axios.get("/api/project/dashboard");
 
-        console.log("dahboard res:", res.data);
+        // console.log("dahboard res:", res.data);
 
         setCounts(res.data.counts);
 

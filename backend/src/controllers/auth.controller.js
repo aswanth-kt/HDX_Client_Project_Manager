@@ -50,6 +50,16 @@ export const registerUser = async (req, res) => {
       });
     };
 
+    const accessToken = await generateToken(user._id);
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none"
+    };
+
+    res.cookie("accessToken", accessToken, options);
+
     return res.status(201).json({
       success: true,
       messsage: "Successfully registered",
@@ -57,8 +67,7 @@ export const registerUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
-        token: await generateToken(user._id)
+        role: user.role
       }
     })
     
