@@ -17,6 +17,14 @@ const ProjectTable = ({ projects }) => {
       </thead>
 
       <tbody>
+        {projects.length === 0 && (
+          <tr>
+            <td colSpan="6" className="text-center p-4 text-gray-500">
+              No project found
+            </td>
+          </tr>
+        )}
+        
         {projects.map((project) => {
           return (
             <tr key={project._id} className='border-t'>

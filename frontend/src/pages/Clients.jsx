@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
+import Loading from '../components/Loading';
 
 
 const mySwal = withReactContent(Swal);
@@ -13,30 +14,41 @@ const mySwal = withReactContent(Swal);
 const Clients = () => {
 
   const [clients, setClients] = useState([]);
-  const [onSearch, setOnSearch] = useState();
+  const [onSearch, setOnSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    
-    const fetchClients = async () => {
-      try {
-        
-        const res = await axios.get(
-          `/api/client/get-clients?search=${onSearch || ""}`
-        );
 
-        // console.log("clients res:", res.data);
+    const timer = setTimeout(() => {
 
-        setClients(res.data.clients);
-
-      } catch (error) {
-        console.error(error.response?.data?.message || error);
+      const fetchClients = async () => {
+        try {
+  
+          setLoading(true);
+          
+          const res = await axios.get(
+            `/api/client/get-clients?search=${onSearch || ""}`
+          );
+  
+          // console.log("clients res:", res.data);
+  
+          setClients(res.data.clients);
+  
+        } catch (error) {
+          console.error(error.response?.data?.message || error);
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    fetchClients();
+      fetchClients();
 
+    }, 500);
+
+    return () => clearTimeout(timer);
+    
   }, [onSearch]);
 
   const handleDelete = async (id) => {
@@ -71,7 +83,8 @@ const Clients = () => {
       toast.warn(res.data?.message);
       
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      toast.error(error.response?.data?.message || "Delete failed")
     }
   }
 
@@ -92,55 +105,68 @@ const Clients = () => {
 
       <Search setOnSearch={setOnSearch} />
 
-      <div className='bg-white shadow rounded overflow-x-auto'>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className='bg-white shadow rounded overflow-x-auto'>
 
-        <table className='w-full'>
+          <table className='w-full'>
 
-          <thead className='bg-gray-200'>
-            <tr>
-              <th className='p-2 text-left'>Name</th>
-              <th className='p-2 text-left'>Company</th>
-              <th className='p-2 text-left'>Project Type</th>
-              <th className='p-2 text-left'>Email</th>
-              <th className='p-2 text-left'>Phone</th>
-              <th className='p-2 text-left'>Actions</th>
-            </tr>
-          </thead>
+            <thead className='bg-gray-200'>
+              <tr>
+                <th className='p-2 text-left'>Name</th>
+                <th className='p-2 text-left'>Company</th>
+                <th className='p-2 text-left'>Project Type</th>
+                <th className='p-2 text-left'>Email</th>
+                <th className='p-2 text-left'>Phone</th>
+                <th className='p-2 text-left'>Actions</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {clients.map((client) => {
-              return (
-                <tr key={client._id} className='border-t'>
-                  <td className='p-2'>{client.name}</td>
-                  <td className='p-2'>{client.company}</td>
-                  <td className='p-2'>{client.projectType}</td>
-                  <td className='p-2'>{client.email}</td>
-                  <td className='p-2'>{client.phone}</td>
-
-                  <td className='p-2'>
-                    <button 
-                      className='text-blue-500 mr-3'
-                      onClick={() => navigate(`/clients/edit/${client._id}`)}  
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      className='text-red-500 mr-3'
-                      onClick={() => handleDelete(client._id)}
-                    >
-                      Delete
-                    </button>
-
+            <tbody>
+              {/* Empty data */}
+              {clients.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="text-center p-4 text-gray-500">
+                    No clients found
                   </td>
                 </tr>
-              )
-            })}
-          </tbody>
+              )}
 
-        </table>
+              {clients.map((client) => {
+                return (
+                  <tr key={client._id} className='border-t'>
+                    <td className='p-2'>{client.name}</td>
+                    <td className='p-2'>{client.company}</td>
+                    <td className='p-2'>{client.projectType}</td>
+                    <td className='p-2'>{client.email}</td>
+                    <td className='p-2'>{client.phone}</td>
 
-      </div>
+                    <td className='p-2'>
+                      <button 
+                        className='text-blue-500 mr-3'
+                        onClick={() => navigate(`/clients/edit/${client._id}`)}  
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className='text-red-500 mr-3'
+                        onClick={() => handleDelete(client._id)}
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+
+          </table>
+
+        </div>
+      )}
 
     </MainLayout>
   )

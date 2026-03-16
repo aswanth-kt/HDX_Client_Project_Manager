@@ -3,16 +3,20 @@ import axios from "../api/axios"
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { handleStatusStyle } from '../utils/statusStyle';
+import Loading from '../components/Loading';
 
 
 const AssignedProjects = () => {
 
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
     const fetchProjects = async () => {
       try {
+
+        setLoading(true);
           
         const { data } = await axios.get("/api/developer/assigned-projects");
 
@@ -22,7 +26,9 @@ const AssignedProjects = () => {
 
       } catch (error) {
         console.error(error)
-      };
+      } finally {
+        setLoading(false);
+      }
         
       };
 
@@ -74,7 +80,7 @@ const AssignedProjects = () => {
         <h2 className='text-2xl font-bold mb-6'>
           Assigned Project
         </h2>
-
+          
         <div className="overflow-x-auto">
 
           <table className='w-full'>
@@ -93,7 +99,7 @@ const AssignedProjects = () => {
               {/* If no assigne project */}
               {projects.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="text-center p-4">
+                  <td colSpan="6" className="text-center p-4 text-gray-500">
                     No projects assigned
                   </td>
                 </tr>
