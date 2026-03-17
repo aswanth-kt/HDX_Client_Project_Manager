@@ -10,6 +10,7 @@ import AddProject from './pages/AddProject'
 import AddClient from './pages/AddClient'
 import EditClient from './pages/EditClient'
 import AssignedProjects from './pages/AssignedProjects'
+import AuthRedirectRoute from './routes/AuthRedirectRoute'
 
 function App() {
 
@@ -19,9 +20,21 @@ function App() {
 
       <Route path='*' element={<PageNotFound />} />
 
-      <Route path='/' element={<Login />} />
+      <Route path='/' 
+        element={
+          <AuthRedirectRoute>
+            <Login />
+          </AuthRedirectRoute>
+        } 
+      />
 
-      <Route path='/register' element={<Register />} />
+      <Route path='/register' 
+        element={
+          <AuthRedirectRoute>
+            <Register />
+          </AuthRedirectRoute>
+        } 
+      />
 
       <Route path='/dashboard' 
         element={
