@@ -3,13 +3,15 @@ import StatusCard from '../components/StatusCard'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from "../api/axios"
+import ProjectChart from '../components/ProjectChart'
 
 const Dashboard = () => {
 
   const [counts, setCounts] = useState({
     totalClientsCount: 0,
     totalActiveProjectCount: 0,
-    totalCompletedProjectCount: 0
+    totalCompletedProjectCount: 0,
+    totalPendingProjectCount: 0
   });
 
   useEffect(() => {
@@ -32,7 +34,11 @@ const Dashboard = () => {
     }
   }, []);
 
-  // console.log("dashboard:", counts)
+  const chartData = [
+    { name: "Pending", value: counts.totalPendingProjectCount },
+    { name: "In Progress", value: counts.totalActiveProjectCount },
+    { name: "Completed", value: counts.totalCompletedProjectCount }
+  ];
 
   return (
     <MainLayout>
@@ -48,6 +54,8 @@ const Dashboard = () => {
         <StatusCard title="Completed Projects" value={counts.totalCompletedProjectCount} />
 
       </div>
+
+      <ProjectChart data={chartData} />
 
     </MainLayout>
   )

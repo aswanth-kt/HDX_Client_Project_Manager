@@ -99,18 +99,24 @@ export const dashboard = async (req, res) => {
 
     const totalClientsCount = await Client.countDocuments();
 
+    const totalPendingProjectCount = await Project.countDocuments({
+      status: "Pending"
+    });
+
     const totalActiveProjectCount = await Project.countDocuments({
       status: "In Progress"
     });
-
+    
     const totalCompletedProjectCount = await Project.countDocuments({
       status: "Completed"
     });
+
 
     const counts = {
       totalClientsCount,
       totalActiveProjectCount,
       totalCompletedProjectCount,
+      totalPendingProjectCount
     }
 
     return res.status(200).json({
