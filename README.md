@@ -121,6 +121,11 @@ Project Status Options:
 * JWT Authentication
 * Password hashing with bcrypt
 * Role‑based access control
+* Integrated chart-based analytics to visualize project status distribution
+  - Displays real-time data for:
+    - Pending
+    - In Progress
+    - Completed
 
 ---
 
@@ -173,8 +178,9 @@ Note: Full Project CRUD will be added in future updates.
 
 ## Pagination
 
-* Pagination implemented in backend
-* Frontend pagination will be added in future updates
+* Fully implemented pagination (backend + frontend)
+* Server-side pagination for optimized performance
+* Dynamic page navigation in UI for better user experience
 
 ---
 
