@@ -54,7 +54,7 @@ export const getProjects = async (req, res) => {
     const { search, status } = req.query;
 
     const page = parseInt(req.query.page) || 1;
-    const limit = Math.min(parseInt(req.query.limit) || 10 , 20);
+    const limit = Math.min(parseInt(req.query.limit) || 5 , 10);
     const skip = (page - 1) * limit;
 
     const filter = {};

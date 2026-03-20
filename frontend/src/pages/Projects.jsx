@@ -5,6 +5,7 @@ import Search from '../components/Search'
 import ProjectTable from '../components/ProjectTable'
 import axios from "../api/axios";
 import Loading from '../components/Loading'
+import Pagination from '../components/Pagination'
 
 
 function Projects() {
@@ -13,6 +14,8 @@ function Projects() {
   const [onSearch, setOnSearch] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, settotalPage] = useState(1);
 
   useEffect(() => {
 
@@ -21,9 +24,10 @@ function Projects() {
 
         setLoading(true)
 
-        const res = await axios.get(`/api/project/get-project?search=${onSearch || ""}&status=${status || ""}`);
+        const res = await axios.get(`/api/project/get-project?search=${onSearch || ""}&status=${status || ""}&page=${page}`);
         
-        setProjects(res.data.projects)
+        setProjects(res.data.projects);
+        settotalPage(res.data?.totalPages);
         
       } catch (error) {
         console.error(error.response?.data?.message || error)
@@ -34,9 +38,11 @@ function Projects() {
 
     fetchProject();
 
-  }, [onSearch, status]);
+  }, [onSearch, status, page]);
 
-  // console.log("on search:", onSearch)
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+  }
 
   return (
     <MainLayout>
@@ -79,6 +85,8 @@ function Projects() {
 
       </div>
       )}
+
+      <Pagination currentPage={page} totalPages={totalPage} onPageChange={handlePageChange} />
 
     </MainLayout>
   )

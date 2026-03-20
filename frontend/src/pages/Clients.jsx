@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 import Loading from '../components/Loading';
+import Pagination from '../components/Pagination';
 
 
 const mySwal = withReactContent(Swal);
@@ -16,6 +17,8 @@ const Clients = () => {
   const [clients, setClients] = useState([]);
   const [onSearch, setOnSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -29,12 +32,13 @@ const Clients = () => {
           setLoading(true);
           
           const res = await axios.get(
-            `/api/client/get-clients?search=${onSearch || ""}`
+            `/api/client/get-clients?search=${onSearch || ""}&page=${page}`
           );
   
           // console.log("clients res:", res.data);
   
           setClients(res.data.clients);
+          setTotalPage(res.data?.totalPage)
   
         } catch (error) {
           console.error(error.response?.data?.message || error);
@@ -49,7 +53,7 @@ const Clients = () => {
 
     return () => clearTimeout(timer);
     
-  }, [onSearch]);
+  }, [onSearch, page]);
 
   const handleDelete = async (id) => {
     try {
@@ -86,7 +90,12 @@ const Clients = () => {
       console.error(error);
       toast.error(error.response?.data?.message || "Delete failed")
     }
-  }
+  };
+
+  // set page for pagination
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber)
+  };
 
   return (
     <MainLayout>
@@ -167,6 +176,8 @@ const Clients = () => {
 
         </div>
       )}
+
+      <Pagination currentPage={page} totalPages={totalPage} onPageChange={handlePageChange} />
 
     </MainLayout>
   )

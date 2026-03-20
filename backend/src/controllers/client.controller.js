@@ -60,7 +60,7 @@ export const getAllClients = async (req, res) => {
     const { search } = req.query;
 
     const page = parseInt(req.query.page) || 1;
-    const limit = Math.min(parseInt(req.query.limit) || 10, 20);
+    const limit = Math.min(parseInt(req.query.limit) || 5, 10);
     const skip = (page - 1) * limit;
 
     let filter = {};

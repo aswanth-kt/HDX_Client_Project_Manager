@@ -3,6 +3,7 @@ import axios from "../api/axios"
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 import { handleStatusStyle } from '../utils/statusStyle';
+import Pagination from '../components/Pagination';
 
 
 const AssignedProjects = () => {
@@ -144,6 +145,8 @@ const AssignedProjects = () => {
         </div>
         
       </div>
+
+      <Pagination />
 
     </>
   )
