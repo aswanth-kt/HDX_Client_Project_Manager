@@ -1,7 +1,7 @@
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
-  console.log(`current page: ${currentPage}, total page: ${totalPages}, onPageChange${onPageChange}`);
-  
+  // console.log(`current page: ${currentPage}, total page: ${totalPages}, onPageChange${onPageChange}`);
+
   const generatePages = () => {
 
     const pages = [];

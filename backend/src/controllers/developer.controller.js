@@ -35,6 +35,10 @@ export const getAssignedProjects = async (req, res) => {
 
     const userId = req.user?._id;
 
+    const page = parseInt(req.query.page);
+    const limit = Math.min(parseInt(req.query.limit) || 5, 10);
+    const skip = (page - 1) * limit;
+
     if (!mongoose.isValidObjectId(userId)) {
       return res.status(400).json({
         success: false,
@@ -45,9 +49,12 @@ export const getAssignedProjects = async (req, res) => {
     const assignedProjects = await Project.find({
       assignedTo: userId
     })
-    .populate("client", "name");
+    .populate("client", "name")
+    .sort({ deadline : 1 })
+    .skip(skip)
+    .limit(limit);
 
-    // console.log("assigned projects:", assignedProjects)
+    console.log("assigned projects:", assignedProjects)
 
     if (!assignedProjects.length) {
       return res.status(404).json({
@@ -56,10 +63,16 @@ export const getAssignedProjects = async (req, res) => {
       })
     };
 
+    // const totalAssignedProjects = assignedProjects.length;
+    const totalAssignedProjects = await Project.countDocuments({ assignedTo: userId })
+
     return res.status(200).json({
       success: true,
       message: "Assigned project fetched",
-      assignedProjects
+      page,
+      assignedProjects,
+      totalAssignedProjects,
+      totalPage: Math.ceil(totalAssignedProjects / limit)
     })
     
   } catch (error) {

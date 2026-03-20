@@ -9,17 +9,20 @@ import Pagination from '../components/Pagination';
 const AssignedProjects = () => {
 
   const [projects, setProjects] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
 
     const fetchProjects = async () => {
       try {
           
-        const { data } = await axios.get("/api/developer/assigned-projects");
+        const { data } = await axios.get(`/api/developer/assigned-projects?page=${page}`);
 
         // console.log("projects:", data.assignedProjects);
 
         setProjects(data?.assignedProjects);
+        setTotalPage(data?.totalPage)
 
       } catch (error) {
         console.error(error)
@@ -29,7 +32,7 @@ const AssignedProjects = () => {
 
     fetchProjects();
 
-  }, []);
+  }, [page]);
 
   const handleStatus = async (e, id) => {
     try {
@@ -62,7 +65,11 @@ const AssignedProjects = () => {
     } catch (error) {
       console.error(error)
     }
-  }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber)
+  };
 
   return (
     
@@ -146,7 +153,7 @@ const AssignedProjects = () => {
         
       </div>
 
-      <Pagination />
+      <Pagination currentPage={page} totalPages={totalPage} onPageChange={handlePageChange} />
 
     </>
   )
