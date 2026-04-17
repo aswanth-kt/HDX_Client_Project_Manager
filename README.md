@@ -264,6 +264,14 @@ npm run dev
 
 ---
 
+## 🎥 Video Demo
+
+You can watch a quick walkthrough of the project here:
+
+👉 [Watch Demo Video](https://youtu.be/Mp_F-K11woY)
+
+---
+
 # 📸 Screenshots
 
 ## Dashboard
